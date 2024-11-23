@@ -6,6 +6,6 @@ export default function Crear() {
     let nombres = ["Rocasari", "Pinger"];
     return (
 
-        <Card title="Carta de Prueba" />
+        <Card title="Carta de Prueba" descripcion="Mi mejor amigo es. . ." />
     );
 }
