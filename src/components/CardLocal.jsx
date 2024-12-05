@@ -1,16 +1,16 @@
 import Link from "next/link";
 
-export default function CardEvent({ evento }) {
+export default function CardLocal({ local }) {
   return (
     <div className="w-full max-w-md p-6 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700 mb-5 mx-auto">
       {/* Header */}
       <div className="flex items-center justify-between mb-1">
         <h5 className="text-xl font-bold text-gray-900 dark:text-white">
-          {evento.nombre}
+          {local.nombre}
         </h5>
         <div className="flex items-center justify-between mb-1 gap-4">
-          {/* Editar Evento */}
-          <Link href={`/eventos/editar/${evento.idEvento}`}>
+          {/* Editar Employee */}
+          <Link href={`/locales/editar/${local.idLocal}`}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -26,8 +26,8 @@ export default function CardEvent({ evento }) {
               />
             </svg>
           </Link>
-          {/* Eliminar Evento */}
-          <Link href={`/eventos/editar/${evento.idEvento}`}>
+          {/* Eliminar Employee */}
+          <Link href={`/locales/editar/${local.idLocal}`}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -46,7 +46,7 @@ export default function CardEvent({ evento }) {
         </div>
       </div>
 
-      {/* Evento Info */}
+      {/* Locales Info */}
       <div className="flow-root">
         <ul
           role="list"
@@ -56,46 +56,22 @@ export default function CardEvent({ evento }) {
             <div className="flex flex-col space-y-2">
               <p className="text-sm text-gray-500 dark:text-gray-400">
                 <span className="font-medium text-gray-700 dark:text-gray-300">
-                  Núm Personas:{" "}
+                  Ubicación: {" "}
                 </span>
-                {evento.numPersonas}
+                {local.ubicacion}
               </p>
               <p className="text-sm text-gray-500 dark:text-gray-400">
                 <span className="font-medium text-gray-700 dark:text-gray-300">
-                  Duración:{" "}
+                  Aforo: {" "}
                 </span>
-                {evento.duracion} Horas
+                {local.aforo}
               </p>
               <p className="text-sm text-gray-500 dark:text-gray-400">
                 <span className="font-medium text-gray-700 dark:text-gray-300">
-                  Total:{" "}
+                  Referencia: {" "}
                 </span>
-                S/. {evento.total}
+                {local.referencia}
               </p>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
-                <span className="font-medium text-gray-700 dark:text-gray-300">
-                  Fecha:{" "}
-                </span>
-                {evento.fecha}
-              </p>
-              {/* Información del Local */}
-              {evento.local ? (
-                <>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
-                    <span className="font-medium text-gray-700 dark:text-gray-300">
-                      Local:{" "}
-                    </span>
-                    {evento.local.nombre}
-                  </p>
-                </>
-              ) : (
-                <p className="text-sm text-gray-500 dark:text-gray-400">
-                  <span className="font-medium text-gray-700 dark:text-gray-300">
-                    Local:{" "}
-                  </span>
-                  No asignado
-                </p>
-              )}
             </div>
           </li>
         </ul>
