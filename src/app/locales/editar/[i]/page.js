@@ -1,13 +1,13 @@
-import EditDecoration from "@/components/EditDecoration";
+import EditLocals from "@/components/EditLocals";
 import Link from "next/link";
 
-export default function EditarDecoracion({ params }) {
-  const { i: id } = params; // Accede directamente a params.i
+export default function EditarLocal({ params }) {
+  const { i: id } = params; 
 
   return (
     <div className="p-6">
       <div className="flex items-center space-x-4 mb-6 justify-center">
-        <Link href="/decoraciones">
+        <Link href="/locales">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -24,10 +24,10 @@ export default function EditarDecoracion({ params }) {
           </svg>
         </Link>
         <h6 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-          Editar Decoración
+          Editar locales
         </h6>
       </div>
-      <EditDecoration id={id} />
+      <EditLocals id={id} />
     </div>
   );
 }
