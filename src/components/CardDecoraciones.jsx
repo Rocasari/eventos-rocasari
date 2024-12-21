@@ -2,27 +2,27 @@
 
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { apiRoutes } from "@/lib/apiRoutes";
 
 export default function CardDecoraciones({ decoracion }) {
   const router = useRouter(); // Hook para manejar la navegación
 
-  const handleDelete = async () => {
+  const handleDelete = async (decoracion) => {
     const confirmDelete = confirm(
       `¿Estás seguro de que deseas eliminar la decoración "${decoracion.descripcion}"?`
     );
     if (!confirmDelete) return;
 
     try {
-      const response = await fetch(
-        `http://localhost:8002/api/decoraciones/${decoracion.idDecoracion}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            "Api-Version": "1",
-          },
-        }
-      );
+      const url = apiRoutes.decoraciones.delete(decoracion.idDecoracion);
+
+      const response = await fetch(url, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "Api-Version": "1", // Si necesitas esta cabecera
+        },
+      });
 
       if (!response.ok) {
         const errorData = await response.json();

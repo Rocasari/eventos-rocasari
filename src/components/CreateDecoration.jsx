@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { apiRoutes } from "@/lib/apiRoutes";
 
 export default function CreateDecoration() {
   const [formData, setFormData] = useState({
@@ -22,7 +23,9 @@ export default function CreateDecoration() {
     e.preventDefault();
     console.log("Datos enviados:", formData); // Verifica los datos enviados
     try {
-      const response = await fetch("http://localhost:8002/api/decoraciones", {
+      const url = apiRoutes.decoraciones.create();
+      
+      const response = await fetch(url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

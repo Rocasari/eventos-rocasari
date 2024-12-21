@@ -28,7 +28,7 @@ export default function CrearDecoracion() {
 
           {/* Título */}
           <h6 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-            Crear Empleado
+            Crear Decoraciones
           </h6>
         </div>
 

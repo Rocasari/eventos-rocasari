@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { apiRoutes } from "@/lib/apiRoutes";
 
 export default function EditDecoration({ id }) {
   const [formData, setFormData] = useState({
@@ -18,15 +19,14 @@ export default function EditDecoration({ id }) {
   useEffect(() => {
     const fetchDecoration = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:8002/api/decoraciones/${id}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              "Api-Version": "1",
-            },
-          }
-        );
+        const url = apiRoutes.decoraciones.update(decoracion.idDecoracion);
+
+        const response = await fetch(url, {
+          headers: {
+            "Content-Type": "application/json",
+            "Api-Version": "1",
+          },
+        });
 
         if (!response.ok) {
           throw new Error("Error al obtener los datos de la decoración");
@@ -59,17 +59,16 @@ export default function EditDecoration({ id }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(
-        `http://localhost:8002/api/decoraciones/${id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            "Api-Version": "1",
-          },
-          body: JSON.stringify(formData),
-        }
-      );
+      const url = apiRoutes.decoraciones.update;
+
+      const response = await fetch(url, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Api-Version": "1",
+        },
+        body: JSON.stringify(formData),
+      });
 
       if (!response.ok) {
         const errorData = await response.json();
