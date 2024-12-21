@@ -1,9 +1,12 @@
 import CardClient from "@/components/CardClient";  
-import Link from "next/link";  
+import Link from "next/link";
+import { apiRoutes } from "@/lib/apiRoutes";  
 
 export default async function Clientes() {  
   try {  
-    const response = await fetch("http://localhost:8002/api/clientes", {  
+    const url = apiRoutes.clientes.getAll();
+    
+    const response = await fetch(url, {  
       headers: {  
         "Api-Version": "1",  
       },  

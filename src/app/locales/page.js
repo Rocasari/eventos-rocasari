@@ -1,9 +1,12 @@
 import CardLocal from "@/components/CardLocal";
 import Link from "next/link";
+import { apiRoutes } from "@/lib/apiRoutes";
 
 export default async function Locales() {
   try {
-    const response = await fetch("http://localhost:8002/api/locales", {
+    const url = apiRoutes.locales.getAll();
+    
+    const response = await fetch(url, {
       headers: {
         "Api-Version": "1",
       },

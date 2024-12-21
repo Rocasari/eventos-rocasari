@@ -1,9 +1,12 @@
 import CardEmployee from "@/components/CardEmployee";
 import Link from "next/link";
+import { apiRoutes } from "@/lib/apiRoutes";
 
 export default async function Empleados() {
   try {
-    const response = await fetch("http://localhost:8002/api/empleados", {
+    const url = apiRoutes.empleados.getAll();
+    
+    const response = await fetch(url, {
       headers: {
         "Api-Version": "1",
       },

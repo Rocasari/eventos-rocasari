@@ -1,9 +1,12 @@
 import CardEvent from "@/components/CardEvent";  
-import Link from "next/link";  
+import Link from "next/link";
+import { apiRoutes } from "@/lib/apiRoutes";  
 
 export default async function Eventos() {  
   try {  
-    const response = await fetch("http://localhost:8002/api/eventos", {  
+    const url = apiRoutes.eventos.getAll();
+    
+    const response = await fetch(url, {  
       headers: {  
         "Api-Version": "1",  
       },  
