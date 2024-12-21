@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
+
 export default function EditLocal({ id }) {
   const [formData, setFormData] = useState({
     nombre: "",
@@ -19,8 +20,10 @@ export default function EditLocal({ id }) {
   useEffect(() => {
     const fetchLocal = async () => {
       try {
+        const url = 
+        
         const response = await fetch(
-          `http://localhost:8002/api/locales/${id}`,
+          `http://localhost:8080/api/locales/${id}`,
           {
             headers: {
               "Content-Type": "application/json",

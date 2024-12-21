@@ -19,7 +19,7 @@ export default function EditDecoration({ id }) {
   useEffect(() => {
     const fetchDecoration = async () => {
       try {
-        const url = apiRoutes.decoraciones.update(decoracion.idDecoracion);
+        const url = apiRoutes.decoraciones.getById(id); // Cambia a getById para obtener datos
 
         const response = await fetch(url, {
           headers: {
@@ -59,7 +59,7 @@ export default function EditDecoration({ id }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const url = apiRoutes.decoraciones.update;
+      const url = apiRoutes.decoraciones.update(id); // Asegúrate de pasar el ID
 
       const response = await fetch(url, {
         method: "PUT",

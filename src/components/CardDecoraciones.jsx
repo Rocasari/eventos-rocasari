@@ -25,8 +25,12 @@ export default function CardDecoraciones({ decoracion }) {
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
-        console.error("Error al eliminar la decoración:", errorData);
+        try {
+          const errorData = await response.json();
+          console.error("Error al eliminar la decoración (datos del servidor):", errorData);
+        } catch (jsonError) {
+          console.error("Error al analizar la respuesta del servidor:", jsonError);
+        }
         throw new Error("Error al eliminar la decoración");
       }
 
@@ -64,7 +68,7 @@ export default function CardDecoraciones({ decoracion }) {
             </svg>
           </Link>
           {/* Eliminar Decoración */}
-          <button onClick={handleDelete}>
+          <button onClick={() => handleDelete(decoracion)}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
