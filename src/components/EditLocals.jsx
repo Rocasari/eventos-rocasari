@@ -20,10 +20,10 @@ export default function EditLocal({ id }) {
   useEffect(() => {
     const fetchLocal = async () => {
       try {
-        const url = 
+        const url = apiRoutes.locales.getById(id); // Cambia a getById para obtener datos
         
         const response = await fetch(
-          `http://localhost:8080/api/locales/${id}`,
+          url,
           {
             headers: {
               "Content-Type": "application/json",
@@ -64,8 +64,10 @@ export default function EditLocal({ id }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      const url = apiRoutes.locales.update(id);
+
       const response = await fetch(
-        `http://localhost:8002/api/locales/${id}`,
+        url,
         {
           method: "PUT",
           headers: {
