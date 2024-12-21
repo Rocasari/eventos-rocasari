@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { apiRoutes } from "@/lib/apiRoutes";
 
 export default function CreateLocal() {
   const [formData, setFormData] = useState({
@@ -22,7 +23,9 @@ export default function CreateLocal() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:8002/api/locales", {
+      const url = apiRoutes.locales.create();
+
+      const response = await fetch(url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -32,10 +35,13 @@ export default function CreateLocal() {
       });
 
       if (!response.ok) {
+        const errorData = await response.json();
+        console.error("Error en la respuesta del servidor:", errorData);
         throw new Error("Error al crear el local");
       }
 
       const result = await response.json();
+      console.log("Local creado exitosamente:", result);
       setMessage("Local creado exitosamente");
 
       // Limpia el formulario
@@ -46,7 +52,7 @@ export default function CreateLocal() {
         referencia: "",
       });
 
-      // Redirige a la lista de empleados
+      // Redirige a la lista de locales
       router.push("/locales");
     } catch (error) {
       console.error("Error creando local:", error);

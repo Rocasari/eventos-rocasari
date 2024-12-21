@@ -34,8 +34,6 @@ export default function CreateDecoration() {
         body: JSON.stringify(formData),
       });
 
-      console.log("Respuesta del servidor:", response); // Verifica la respuesta
-
       if (!response.ok) {
         const errorData = await response.json();
         console.error("Error en la respuesta del servidor:", errorData);
@@ -43,7 +41,6 @@ export default function CreateDecoration() {
       }
 
       const result = await response.json();
-      console.log("Decoracion Creada:", result); // Verifica el resultado
       setMessage("Decoracion creada exitosamente");
 
       setFormData({
