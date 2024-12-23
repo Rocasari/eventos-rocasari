@@ -19,16 +19,14 @@ export default async function Decoraciones() {
     const result = await response.json();
     const decoraciones = Array.isArray(result.data) ? result.data : [];
 
+    const nav = apiRoutes.navegacion.home();
+
     return (
       <div className="w-full max-w-md p-6 mx-auto">
         {/* Contenedor de icono y título */}
         <div className="flex items-center justify-between space-x-4 mb-6">
           {/* Icono de inicio */}
-          <a
-            href="http://localhost:3000/"
-            target="_self"
-            rel="noopener noreferrer"
-          >
+          <a href={nav} target="_self" rel="noopener noreferrer">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"

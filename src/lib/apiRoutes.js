@@ -46,4 +46,14 @@ export const apiRoutes = {
     update: (id) => `${BASE_URL}/empleados/${id}`, // PUT o PATCH
     delete: (id) => `${BASE_URL}/empleados/${id}`, // DELETE
   },
+
+  // Rutas para navegar por la página (frontend)
+  navegacion: {
+    home: () => `/`, // Ruta relativa al home
+    clientes: () => `/clientes`,
+    decoraciones: () => `/decoraciones`,
+    empleados: () => `/empleados`,
+    eventos: () => `/eventos`,
+    locales: () => `/locales`,
+  },
 };
