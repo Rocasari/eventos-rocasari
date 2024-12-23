@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { apiRoutes } from "@/lib/apiRoutes";
 
 export default function CreateCustomer() {
   const [formData, setFormData] = useState({
@@ -22,8 +23,10 @@ export default function CreateCustomer() {
   const handleSubmit = async (e) => {  
     e.preventDefault();  
     console.log("Datos enviados:", formData); // Verifica los datos enviados  
-    try {  
-      const response = await fetch("http://localhost:8002/api/clientes", {  
+    try {
+      const url = apiRoutes.clientes.create();
+
+      const response = await fetch(url, {  
         method: "POST",  
         headers: {  
           "Content-Type": "application/json",  
