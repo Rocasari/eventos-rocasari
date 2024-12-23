@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { apiRoutes } from "@/lib/apiRoutes";
 
 export default function CreateEmployee() {
   const [formData, setFormData] = useState({
@@ -24,7 +25,9 @@ export default function CreateEmployee() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:8002/api/empleados", {
+      const url = apiRoutes.empleados.create();
+
+      const response = await fetch(url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -34,6 +37,8 @@ export default function CreateEmployee() {
       });
 
       if (!response.ok) {
+        const errorData = await response.json();
+        console.error("Error en la respuesta del servidor:", errorData);
         throw new Error("Error al crear el empleado");
       }
 
