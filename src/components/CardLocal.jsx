@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { apiRoutes } from "@/lib/apiRoutes";
 
 export default function CardLocal({ local }) {
   const router = useRouter(); // Hook para manejar la navegación
@@ -15,30 +16,25 @@ export default function CardLocal({ local }) {
     try {
       const url = apiRoutes.locales.delete(local.idLocal);
 
-      const response = await fetch(
-        url, // Endpoint para eliminar local
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            "Api-Version": "1",
-          },
-        }
-      );
+      const response = await fetch(url, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "Api-Version": "1",
+        },
+      });
 
-      // Verificar manualmente si la respuesta no es exitosa
       if (!response.ok) {
         let errorMessage = "No se pudo eliminar el local.";
         try {
-          // Intentar leer el mensaje de error del backend
           const errorData = await response.json();
           errorMessage = errorData.message || errorMessage;
         } catch (e) {
           console.error("No se pudo leer el mensaje de error del backend:", e);
         }
-        alert(`Error: ${errorMessage}`); // Mostrar la razón del error al usuario
+        alert(`Error: ${errorMessage}`);
         console.error("Error al eliminar el local:", response);
-        return; // Salir de la función
+        return;
       }
 
       alert("Local eliminado exitosamente");
@@ -75,7 +71,7 @@ export default function CardLocal({ local }) {
             </svg>
           </Link>
           {/* Eliminar Local */}
-          <button onClick={handleDelete}>
+          <button onClick={() => handleDelete(local)}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -94,7 +90,7 @@ export default function CardLocal({ local }) {
         </div>
       </div>
 
-      {/* Locales Info */}
+      {/* Local Info */}
       <div className="flow-root">
         <ul
           role="list"

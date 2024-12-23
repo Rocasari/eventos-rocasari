@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-
+import { apiRoutes } from "@/lib/apiRoutes";
 
 export default function EditLocal({ id }) {
   const [formData, setFormData] = useState({
@@ -16,21 +16,18 @@ export default function EditLocal({ id }) {
   const [loading, setLoading] = useState(true); // Estado para manejar la carga
   const router = useRouter();
 
-  // Obtener los datos de la decoración al cargar el componente
+  // Obtener los datos del local al cargar el componente
   useEffect(() => {
     const fetchLocal = async () => {
       try {
         const url = apiRoutes.locales.getById(id); // Cambia a getById para obtener datos
-        
-        const response = await fetch(
-          url,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              "Api-Version": "1",
-            },
-          }
-        );
+
+        const response = await fetch(url, {
+          headers: {
+            "Content-Type": "application/json",
+            "Api-Version": "1",
+          },
+        });
 
         if (!response.ok) {
           throw new Error("Error al obtener los datos del local");
@@ -52,7 +49,7 @@ export default function EditLocal({ id }) {
     };
 
     if (id) {
-        fetchLocal(); // Llama a la función solo si el ID está disponible
+      fetchLocal(); // Llama a la función solo si el ID está disponible
     }
   }, [id]);
 
@@ -64,31 +61,28 @@ export default function EditLocal({ id }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const url = apiRoutes.locales.update(id);
+      const url = apiRoutes.locales.update(id); // Asegúrate de pasar el ID
 
-      const response = await fetch(
-        url,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            "Api-Version": "1",
-          },
-          body: JSON.stringify(formData),
-        }
-      );
+      const response = await fetch(url, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Api-Version": "1",
+        },
+        body: JSON.stringify(formData),
+      });
 
       if (!response.ok) {
         const errorData = await response.json();
         console.error("Error en la respuesta del servidor:", errorData);
-        throw new Error("Error al actualizar la decoración");
+        throw new Error("Error al actualizar el local");
       }
 
       const result = await response.json();
       console.log("Local actualizado:", result);
       setMessage("Local actualizado exitosamente");
 
-      // Redirigir al usuario a la lista de decoraciones
+      // Redirigir al usuario a la lista de locales
       router.push("/locales");
     } catch (error) {
       console.error("Error actualizando el local:", error);
@@ -102,6 +96,7 @@ export default function EditLocal({ id }) {
 
   return (
     <div className="w-full max-w-md p-6 mx-auto">
+      <h1 className="text-xl font-bold mb-4">Editar Local</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-sm font-medium">Nombre</label>
@@ -128,7 +123,7 @@ export default function EditLocal({ id }) {
         <div>
           <label className="block text-sm font-medium">Aforo</label>
           <input
-            type="text"
+            type="number"
             name="aforo"
             value={formData.aforo}
             onChange={handleChange}
@@ -151,7 +146,7 @@ export default function EditLocal({ id }) {
           type="submit"
           className="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700"
         >
-          Crear
+          Actualizar
         </button>
       </form>
       {message && <p className="mt-4 text-center">{message}</p>}
