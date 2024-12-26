@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { apiRoutes } from "@/lib/apiRoutes";
 
@@ -12,17 +12,53 @@ export default function CreateEvent() {
     total: "",
     fecha: "",
     local: {
-      idLocal: "", // Cambiado para reflejar la estructura esperada
+      idLocal: "",
     },
   });
 
+  const [locales, setLocales] = useState([]); // Inicializa como un array vacío
   const [message, setMessage] = useState("");
-  const router = useRouter(); // Hook para manejar la navegación
+  const router = useRouter();
+
+  // Obtener la lista de locales al montar el componente
+  useEffect(() => {
+    const fetchLocales = async () => {
+      try {
+        const url = apiRoutes.locales.getAll(); // Asegúrate de que esta ruta sea correcta
+        const response = await fetch(url, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Api-Version": "1",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Error al obtener los locales");
+        }
+
+        const data = await response.json();
+        console.log("Respuesta del backend:", data); // Depura la respuesta completa
+
+        // Extrae el array de locales de la clave `data`
+        if (data.success && Array.isArray(data.data)) {
+          setLocales(data.data);
+        } else {
+          console.error("La respuesta no contiene un array de locales:", data);
+          setLocales([]); // Si no es un array, asigna un array vacío
+        }
+      } catch (error) {
+        console.error("Error al obtener los locales:", error);
+        setLocales([]); // En caso de error, asigna un array vacío
+      }
+    };
+
+    fetchLocales();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === "idLocal") {
-      // Actualiza solo el campo idLocal dentro de local
       setFormData({
         ...formData,
         local: { ...formData.local, idLocal: value },
@@ -34,7 +70,7 @@ export default function CreateEvent() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Datos enviados:", formData); // Verifica los datos enviados
+    console.log("Datos enviados:", formData);
     try {
       const url = apiRoutes.eventos.create();
 
@@ -47,24 +83,21 @@ export default function CreateEvent() {
         body: JSON.stringify(formData),
       });
 
-      console.log("Respuesta del servidor:", response); // Verifica la respuesta
-
       if (!response.ok) {
         let errorData;
         try {
-          errorData = await response.json(); // Intenta obtener el cuerpo del error
+          errorData = await response.json();
         } catch (err) {
-          errorData = `Código de estado: ${response.status}`; // Si no hay cuerpo JSON, muestra el código de estado
+          errorData = `Código de estado: ${response.status}`;
         }
         console.error("Error en la respuesta del servidor:", errorData);
         throw new Error("Error al crear el evento");
       }
 
       const result = await response.json();
-      console.log("Evento creado:", result); // Verifica el resultado
+      console.log("Evento creado:", result);
       setMessage("Evento creado exitosamente");
 
-      // Limpia el formulario
       setFormData({
         nombre: "",
         numPersonas: "",
@@ -76,7 +109,6 @@ export default function CreateEvent() {
         },
       });
 
-      // Redirige a la lista de eventos
       router.push("/eventos");
     } catch (error) {
       console.error("Error creando evento:", error);
@@ -136,7 +168,7 @@ export default function CreateEvent() {
         <div>
           <label className="block text-sm font-medium">Fecha</label>
           <input
-            type="date" // Tipo de entrada para fecha
+            type="date"
             name="fecha"
             value={formData.fecha}
             onChange={handleChange}
@@ -146,14 +178,20 @@ export default function CreateEvent() {
         </div>
         <div>
           <label className="block text-sm font-medium">Local</label>
-          <input
-            type="number"
-            name="idLocal" // Cambiado para reflejar la propiedad del objeto
-            value={formData.local.idLocal} // Accede a la propiedad idLocal
+          <select
+            name="idLocal"
+            value={formData.local.idLocal}
             onChange={handleChange}
             className="w-full px-3 py-2 border rounded"
             required
-          />
+          >
+            <option value="">Selecciona un local</option>
+            {locales.map((local) => (
+              <option key={local.idLocal} value={local.idLocal}>
+                {local.nombre} {/* Ajusta según la estructura de tu objeto local */}
+              </option>
+            ))}
+          </select>
         </div>
         <button
           type="submit"
