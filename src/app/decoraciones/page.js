@@ -22,7 +22,7 @@ export default async function Decoraciones() {
     const nav = apiRoutes.navegacion.home();
 
     return (
-      <div className="w-full max-w-md p-6 mx-auto">
+      <div className="w-full max-w-7xl p-6 mx-auto">
         {/* Contenedor de icono y título */}
         <div className="flex items-center justify-between space-x-4 mb-6">
           {/* Icono de inicio */}
@@ -68,18 +68,13 @@ export default async function Decoraciones() {
         </div>
 
         {/* Lista de decoraciones */}
-        <div className="flow-root">
-          <ul
-            role="list"
-            className="divide-y divide-gray-200 dark:divide-gray-700"
-          >
-            {decoraciones.map((decoracion) => (
-              <CardDecoraciones
-                key={decoracion.idDecoracion}
-                decoracion={decoracion}
-              />
-            ))}
-          </ul>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {decoraciones.map((decoracion) => (
+            <CardDecoraciones
+              key={decoracion.idDecoracion}
+              decoracion={decoracion}
+            />
+          ))}
         </div>
       </div>
     );

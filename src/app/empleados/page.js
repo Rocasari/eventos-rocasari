@@ -5,7 +5,7 @@ import { apiRoutes } from "@/lib/apiRoutes";
 export default async function Empleados() {
   try {
     const url = apiRoutes.empleados.getAll();
-    
+
     const response = await fetch(url, {
       headers: {
         "Api-Version": "1",
@@ -22,7 +22,7 @@ export default async function Empleados() {
     const nav = apiRoutes.navegacion.home();
 
     return (
-      <div className="w-full max-w-md p-6 mx-auto">
+      <div className="w-full max-w-7xl p-6 mx-auto">
         {/* Contenedor de icono y título */}
         <div className="flex items-center justify-between space-x-4 mb-6">
           {/* Icono de inicio */}
@@ -67,15 +67,10 @@ export default async function Empleados() {
           </Link>
         </div>
         {/* Lista de empleados */}
-        <div className="flow-root">
-          <ul
-            role="list"
-            className="divide-y divide-gray-200 dark:divide-gray-700"
-          >
-            {empleados.map((empleado) => (
-              <CardEmployee key={empleado.idEmpleado} empleado={empleado} />
-            ))}
-          </ul>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {empleados.map((empleado) => (
+            <CardEmployee key={empleado.idEmpleado} empleado={empleado} />
+          ))}
         </div>
       </div>
     );
