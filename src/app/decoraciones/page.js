@@ -2,14 +2,18 @@ import CardDecoraciones from "@/components/CardDecoraciones";
 import Link from "next/link";
 import { apiRoutes } from "@/lib/apiRoutes";
 
+// Componente principal
 export default async function Decoraciones() {
   try {
     const url = apiRoutes.decoraciones.getAll();
 
+    // Fetch de datos en el servidor
     const response = await fetch(url, {
       headers: {
         "Api-Version": "1",
       },
+      // Esta opción asegura que el fetch se realice en el servidor
+      cache: "no-store",
     });
 
     if (!response.ok) {
