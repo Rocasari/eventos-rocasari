@@ -10,6 +10,8 @@ export default async function Eventos() {
       headers: {
         "Api-Version": "1",
       },
+      // Esta opción asegura que el fetch se realice en el servidor
+      cache: "no-store",
     });
 
     if (!response.ok) {
