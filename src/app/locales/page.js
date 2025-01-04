@@ -47,7 +47,7 @@ export default async function Locales() {
 
           {/* Título */}
           <h6 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-            Lista de Locales
+            Locales
           </h6>
 
           {/* Icono para crear empleado */}

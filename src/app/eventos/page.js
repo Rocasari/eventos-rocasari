@@ -47,7 +47,7 @@ export default async function Eventos() {
 
           {/* Título */}
           <h6 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-            Lista de Eventos
+            Eventos
           </h6>
 
           {/* Icono para crear evento */}
