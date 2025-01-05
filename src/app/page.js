@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 export default function Home() {
-  console.log('Página cargada:', new Date().toISOString())
+  console.log(`[PAGE LOG] Página principal cargada: ${new Date().toISOString()}`);
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-8 gap-8 sm:p-8 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-center">
@@ -12,7 +12,7 @@ export default function Home() {
             className="flex flex-col rounded-lg bg-white text-surface shadow-secondary-1 dark:bg-surface-dark dark:text-white w-full h-96"
             href="/locales"
           >
-            <img
+            <Image
               className="h-48 w-full rounded-t-lg object-cover"
               src="/locales.jpg"
               alt="Locales"
@@ -29,7 +29,7 @@ export default function Home() {
             className="flex flex-col rounded-lg bg-white text-surface shadow-secondary-1 dark:bg-surface-dark dark:text-white w-full h-96"
             href="/empleados"
           >
-            <img
+            <Image
               className="h-48 w-full rounded-t-lg object-cover"
               src="/empleados.jpg"
               alt="Empleados"
@@ -46,7 +46,7 @@ export default function Home() {
             className="flex flex-col rounded-lg bg-white text-surface shadow-secondary-1 dark:bg-surface-dark dark:text-white w-full h-96"
             href="/clientes"
           >
-            <img
+            <Image
               className="h-48 w-full rounded-t-lg object-cover"
               src="/clientes.jpg"
               alt="Clientes"
@@ -63,7 +63,7 @@ export default function Home() {
             className="flex flex-col rounded-lg bg-white text-surface shadow-secondary-1 dark:bg-surface-dark dark:text-white w-full h-96"
             href="/decoraciones"
           >
-            <img
+            <Image
               className="h-48 w-full rounded-t-lg object-cover"
               src="/decoraciones.jpg"
               alt="Decoraciones"
@@ -80,7 +80,7 @@ export default function Home() {
             className="flex flex-col rounded-lg bg-white text-surface shadow-secondary-1 dark:bg-surface-dark dark:text-white w-full h-96"
             href="/eventos"
           >
-            <img
+            <Image
               className="h-48 w-full rounded-t-lg object-cover"
               src="/eventos.jpg"
               alt="Eventos"
