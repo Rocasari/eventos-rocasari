@@ -10,18 +10,9 @@ export function middleware(request) {
     referer: request.headers.get("referer"),
   };
 
-  console.log(`[ACCESS LOG] ${JSON.stringify(logInfo)}`);
+  console.log(`[ACCESS LOG] ${JSON.stringify(logInfo)}`); // Asegúrate de que esté incluido.
 
-  // Registra el código de estado (404 o 500) en la respuesta
-  return NextResponse.next().then((response) => {
-    const statusCode = response.status || 200; // Por defecto es 200 si no hay error
-
-    if (statusCode === 404 || statusCode >= 500) {
-      console.error(`[ERROR ${statusCode}] ${JSON.stringify(logInfo)}`);
-    }
-
-    return response;
-  });
+  return NextResponse.next();
 }
 
 // Configuración para que se ejecute en todas las rutas
