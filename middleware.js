@@ -1,62 +1,39 @@
-// middleware.js
 import { NextResponse } from "next/server";
-import fs from 'fs/promises';
 
-async function logRequest(info) {
-  const logPath = '/var/www/eventos-rocasari/logs/api.log';
-  await fs.appendFile(logPath, `${JSON.stringify(info)}\n`)
-    .catch(console.error);
-}
-
-export async function middleware(request) {
-  const startTime = Date.now();
-  const url = new URL(request.url);
-  
+export function middleware(request) {
   const logInfo = {
     timestamp: new Date().toISOString(),
     method: request.method,
-    path: url.pathname,
-    query: Object.fromEntries(url.searchParams),
+    url: request.url,
     userAgent: request.headers.get("user-agent"),
     ip: request.headers.get("x-forwarded-for") || request.ip,
+    referer: request.headers.get("referer"),
   };
+  
+  const response = NextResponse.next();
 
-  try {
-    const response = NextResponse.next();
-    
-    // Detectar errores 404
-    if (response.headers.get('x-nextjs-route-type') === 'not-found') {
-      logInfo.statusCode = 404;
-      logInfo.type = 'NOT_FOUND';
-      await logRequest(logInfo);
-      return response;
+  response.headers.set('x-start-time', logInfo.timestamp);
+
+  response.then(res => {
+    logInfo.status = res.status;
+
+    if (logInfo.status === 404 || logInfo.status === 500) {
+      console.log(`[MIDDLEWARE LOG] ${JSON.stringify(logInfo)}`);
     }
 
-    // Capturar errores 500 y otros
-    response.headers.set('x-response-time', `${Date.now() - startTime}ms`);
-    
-    const isApiRoute = url.pathname.startsWith('/api/');
-    if (isApiRoute) {
-      logInfo.statusCode = response.status;
-      logInfo.type = response.status >= 500 ? 'SERVER_ERROR' : 'API_CALL';
-      logInfo.responseTime = `${Date.now() - startTime}ms`;
+    if (res.headers.get('x-start-time')) {
+      const startTime = new Date(res.headers.get('x-start-time')).getTime();
+      const endTime = new Date().getTime();
+      logInfo.processingTime = `${endTime - startTime}ms`;
+
+      console.log(`[MIDDLEWARE LOG] ${JSON.stringify(logInfo)}`);
     }
+  });
 
-    await logRequest(logInfo);
-    return response;
-
-  } catch (error) {
-    logInfo.statusCode = 500;
-    logInfo.type = 'SERVER_ERROR';
-    logInfo.error = error.message;
-    await logRequest(logInfo);
-    
-    return NextResponse.next();
-  }
+  return response;
 }
 
+// Configuración para que se ejecute en todas las rutas
 export const config = {
-  matcher: [
-    '/((?!_next/static|favicon.ico).*)',
-  ]
+  matcher: "/:path*",
 };
