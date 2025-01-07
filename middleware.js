@@ -1,8 +1,9 @@
+// middleware.js
 import { NextResponse } from "next/server";
+import fs from 'fs';
+import path from 'path';
 
-console.log(`[DEBUG] Middleware is running for URL: ${request.url}`);
-
-export function middleware(request) {
+export async function middleware(request) {
   const logInfo = {
     timestamp: new Date().toISOString(),
     method: request.method,
@@ -12,13 +13,39 @@ export function middleware(request) {
     referer: request.headers.get("referer"),
   };
 
-  console.log(`[DEBUG] Middleware is running for URL: ${request.url}`);
+  // Crear log personalizado
+  const logMessage = `${JSON.stringify(logInfo)}\n`;
+  const logPath = path.join(process.cwd(), 'logs', 'access.log');
 
-  console.log(`[ACCESS LOG] ${JSON.stringify(logInfo)}`);
-  return NextResponse.next(); // Continúa con la solicitud normalmente.
+  try {
+    // Asegurarse que el directorio existe
+    fs.mkdirSync(path.join(process.cwd(), 'logs'), { recursive: true });
+    fs.appendFileSync(logPath, logMessage);
+  } catch (error) {
+    console.error('Error writing to log file:', error);
+  }
+
+  const response = NextResponse.next();
+  
+  // Capturar códigos de estado
+  response.on('finish', () => {
+    const statusCode = response.status;
+    if (statusCode >= 400) {
+      const errorLog = {
+        ...logInfo,
+        statusCode,
+        error: response.statusText
+      };
+      fs.appendFileSync(
+        path.join(process.cwd(), 'logs', 'error.log'),
+        `${JSON.stringify(errorLog)}\n`
+      );
+    }
+  });
+
+  return response;
 }
 
-// Configuración para que se ejecute en todas las rutas
 export const config = {
-  matcher: "/:path*", // Activa el middleware para todas las rutas.
+  matcher: "/:path*"
 };
