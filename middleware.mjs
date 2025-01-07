@@ -6,7 +6,7 @@ export function middleware(request) {
     method: request.method,
     url: request.url,
   };
-  
+
   console.log(`[MIDDLEWARE TEST] ${JSON.stringify(logInfo)}`);
 
   return NextResponse.next();
