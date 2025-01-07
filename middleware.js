@@ -1,51 +1,62 @@
 // middleware.js
 import { NextResponse } from "next/server";
-import fs from 'fs';
-import path from 'path';
+import fs from 'fs/promises';
+
+async function logRequest(info) {
+  const logPath = '/var/www/eventos-rocasari/logs/api.log';
+  await fs.appendFile(logPath, `${JSON.stringify(info)}\n`)
+    .catch(console.error);
+}
 
 export async function middleware(request) {
+  const startTime = Date.now();
+  const url = new URL(request.url);
+  
   const logInfo = {
     timestamp: new Date().toISOString(),
     method: request.method,
-    url: request.url,
+    path: url.pathname,
+    query: Object.fromEntries(url.searchParams),
     userAgent: request.headers.get("user-agent"),
     ip: request.headers.get("x-forwarded-for") || request.ip,
-    referer: request.headers.get("referer"),
   };
 
-  // Crear log personalizado
-  const logMessage = `${JSON.stringify(logInfo)}\n`;
-  const logPath = path.join(process.cwd(), 'logs', 'access.log');
-
   try {
-    // Asegurarse que el directorio existe
-    fs.mkdirSync(path.join(process.cwd(), 'logs'), { recursive: true });
-    fs.appendFileSync(logPath, logMessage);
-  } catch (error) {
-    console.error('Error writing to log file:', error);
-  }
-
-  const response = NextResponse.next();
-  
-  // Capturar códigos de estado
-  response.on('finish', () => {
-    const statusCode = response.status;
-    if (statusCode >= 400) {
-      const errorLog = {
-        ...logInfo,
-        statusCode,
-        error: response.statusText
-      };
-      fs.appendFileSync(
-        path.join(process.cwd(), 'logs', 'error.log'),
-        `${JSON.stringify(errorLog)}\n`
-      );
+    const response = NextResponse.next();
+    
+    // Detectar errores 404
+    if (response.headers.get('x-nextjs-route-type') === 'not-found') {
+      logInfo.statusCode = 404;
+      logInfo.type = 'NOT_FOUND';
+      await logRequest(logInfo);
+      return response;
     }
-  });
 
-  return response;
+    // Capturar errores 500 y otros
+    response.headers.set('x-response-time', `${Date.now() - startTime}ms`);
+    
+    const isApiRoute = url.pathname.startsWith('/api/');
+    if (isApiRoute) {
+      logInfo.statusCode = response.status;
+      logInfo.type = response.status >= 500 ? 'SERVER_ERROR' : 'API_CALL';
+      logInfo.responseTime = `${Date.now() - startTime}ms`;
+    }
+
+    await logRequest(logInfo);
+    return response;
+
+  } catch (error) {
+    logInfo.statusCode = 500;
+    logInfo.type = 'SERVER_ERROR';
+    logInfo.error = error.message;
+    await logRequest(logInfo);
+    
+    return NextResponse.next();
+  }
 }
 
 export const config = {
-  matcher: "/:path*"
+  matcher: [
+    '/((?!_next/static|favicon.ico).*)',
+  ]
 };
