@@ -1,10 +1,18 @@
-module.exports = {
-    async rewrites() {
-      return [
-        {
-          source: "/api/:path*", // Redirige todas las solicitudes que comiencen con /api
-          destination: "http://192.168.10.13:8080/api/:path*", // URL del backend
-        },
-      ];
-    },
+import { NextResponse } from "next/server";
+
+export function middleware(request) {
+  const logInfo = {
+    timestamp: new Date().toISOString(),
+    method: request.method,
+    url: request.url,
   };
+
+  console.log(`[MIDDLEWARE TEST] ${JSON.stringify(logInfo)}`);
+
+  return NextResponse.next();
+}
+
+// Configuración para que se ejecute en todas las rutas
+export const config = {
+  matcher: "/:path*",
+};
