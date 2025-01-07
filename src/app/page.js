@@ -12,7 +12,7 @@ export default function Home() {
             className="flex flex-col rounded-lg bg-white text-surface shadow-secondary-1 dark:bg-surface-dark dark:text-white w-full h-96"
             href="/locales"
           >
-            <Image
+            <img
               className="h-48 w-full rounded-t-lg object-cover"
               src="/locales.jpg"
               alt="Locales"
@@ -29,7 +29,7 @@ export default function Home() {
             className="flex flex-col rounded-lg bg-white text-surface shadow-secondary-1 dark:bg-surface-dark dark:text-white w-full h-96"
             href="/empleados"
           >
-            <Image
+            <img
               className="h-48 w-full rounded-t-lg object-cover"
               src="/empleados.jpg"
               alt="Empleados"
@@ -46,7 +46,7 @@ export default function Home() {
             className="flex flex-col rounded-lg bg-white text-surface shadow-secondary-1 dark:bg-surface-dark dark:text-white w-full h-96"
             href="/clientes"
           >
-            <Image
+            <img
               className="h-48 w-full rounded-t-lg object-cover"
               src="/clientes.jpg"
               alt="Clientes"
@@ -63,7 +63,7 @@ export default function Home() {
             className="flex flex-col rounded-lg bg-white text-surface shadow-secondary-1 dark:bg-surface-dark dark:text-white w-full h-96"
             href="/decoraciones"
           >
-            <Image
+            <img
               className="h-48 w-full rounded-t-lg object-cover"
               src="/decoraciones.jpg"
               alt="Decoraciones"
@@ -80,7 +80,7 @@ export default function Home() {
             className="flex flex-col rounded-lg bg-white text-surface shadow-secondary-1 dark:bg-surface-dark dark:text-white w-full h-96"
             href="/eventos"
           >
-            <Image
+            <img
               className="h-48 w-full rounded-t-lg object-cover"
               src="/eventos.jpg"
               alt="Eventos"
@@ -101,7 +101,7 @@ export default function Home() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <Image
+          <img
             aria-hidden
             src="/globe.svg"
             alt="Globe icon"
