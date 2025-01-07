@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 
+console.log(`[DEBUG] Middleware is running for URL: ${request.url}`);
+
 export function middleware(request) {
   const logInfo = {
     timestamp: new Date().toISOString(),
@@ -10,12 +12,13 @@ export function middleware(request) {
     referer: request.headers.get("referer"),
   };
 
-  console.log(`[ACCESS LOG] ${JSON.stringify(logInfo)}`); // Asegúrate de que esté incluido.
+  console.log(`[DEBUG] Middleware is running for URL: ${request.url}`);
 
-  return NextResponse.next();
+  console.log(`[ACCESS LOG] ${JSON.stringify(logInfo)}`);
+  return NextResponse.next(); // Continúa con la solicitud normalmente.
 }
 
 // Configuración para que se ejecute en todas las rutas
 export const config = {
-  matcher: "/:path*",
+  matcher: "/:path*", // Activa el middleware para todas las rutas.
 };
