@@ -9,7 +9,10 @@ export function middleware(request) {
     ip: request.headers.get("x-forwarded-for") || request.ip,
     referer: request.headers.get("referer"),
   };
-  
+
+  // Log all API requests
+  console.log(`[API REQUEST] ${JSON.stringify(logInfo)}`);
+
   const response = NextResponse.next();
 
   response.headers.set('x-start-time', logInfo.timestamp);
@@ -18,7 +21,7 @@ export function middleware(request) {
     logInfo.status = res.status;
 
     if (logInfo.status === 404 || logInfo.status === 500) {
-      console.log(`[MIDDLEWARE LOG] ${JSON.stringify(logInfo)}`);
+      console.log(`[ERROR LOG] ${JSON.stringify(logInfo)}`);
     }
 
     if (res.headers.get('x-start-time')) {
@@ -26,7 +29,7 @@ export function middleware(request) {
       const endTime = new Date().getTime();
       logInfo.processingTime = `${endTime - startTime}ms`;
 
-      console.log(`[MIDDLEWARE LOG] ${JSON.stringify(logInfo)}`);
+      console.log(`[PROCESSING TIME] ${JSON.stringify(logInfo)}`);
     }
   });
 
