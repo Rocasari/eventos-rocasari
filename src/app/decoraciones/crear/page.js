@@ -9,7 +9,7 @@ export default function CrearDecoracion() {
         {/* Contenedor de icono y título */}
         <div className="flex items-center space-x-4 mb-6 justify-center">
           {/* Icono para regresar */}
-          <Link href="/decoracion">
+          <Link href="/decoraciones">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
